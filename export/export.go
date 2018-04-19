@@ -30,7 +30,7 @@ const jsonTemplate = `[{{range $item :=.}}
 func doExportFile(filename, dir string) {
 
 	basename := filepath.Base(filename)
-	jsonName := strings.TrimSuffix(basename, filepath.Ext(basename))
+	jsonFileName := strings.TrimSuffix(basename, filepath.Ext(basename))
 
 	xlFile, err := xlsx.OpenFile(filename)
 	if err != nil {
@@ -84,9 +84,9 @@ func doExportFile(filename, dir string) {
 
 	os.MkdirAll(path.Join(dir, "json"), os.ModePerm)
 
-	outputFilename := path.Join(dir, "json", jsonName+".json")
+	outputFileName := path.Join(dir, "json", jsonFileName+".json")
 
-	f, err := os.Create(outputFilename)
+	f, err := os.Create(outputFileName)
 	if err != nil {
 
 		fmt.Println("create file: ", err)
