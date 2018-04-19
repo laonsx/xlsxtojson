@@ -1,6 +1,6 @@
 package export
 
-func run() {
+func Run() {
 
 	files, _ := listDir("./", "xlsx")
 
