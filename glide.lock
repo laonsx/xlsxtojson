@@ -1,10 +1,6 @@
-hash: 74224da222d1a62114de0d92a081ee7c26e6ef9ce2fed6acbc7e944ff3e6ff3a
-updated: 2018-04-20T00:02:44.463471533+08:00
+hash: 57c311b59de5d7e9daade94c27d5f344c5760f622524c80498b80dd46be34aec
+updated: 2018-04-20T23:48:50.869094173+08:00
 imports:
-- name: github.com/spf13/cobra
-  version: 7b2c5ac9fc04fc5efafb60700713d4fa609b777b
-- name: github.com/spf13/viper
-  version: 25b30aa063fc18e48662b86996252eabdcf2f0c7
 - name: github.com/tealeg/xlsx
   version: 8be35264fa75a1bbe954ce51eba04f273e2c59e5
 testImports: []
