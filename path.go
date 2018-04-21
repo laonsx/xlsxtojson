@@ -16,7 +16,7 @@ func listDir(dirPth string, suffix string) (files []string, err error) {
 		return nil, err
 	}
 
-	PthSep := string(os.PathSeparator)
+	pthSep := string(os.PathSeparator)
 	suffix = strings.ToUpper(suffix)
 
 	for _, f := range dir {
@@ -28,7 +28,7 @@ func listDir(dirPth string, suffix string) (files []string, err error) {
 
 		if strings.HasSuffix(strings.ToUpper(f.Name()), suffix) {
 
-			files = append(files, dirPth+PthSep+f.Name())
+			files = append(files, dirPth+pthSep+f.Name())
 		}
 	}
 
