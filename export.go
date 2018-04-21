@@ -27,15 +27,15 @@ const jsonTemplate = `[{{range $item :=.}}
 	}{{if $item.end}},{{end}}{{end}}
 ]`
 
-func doExportFile(filename, dir string) {
+func doExportFile(fileNname, dir string) {
 
-	basename := filepath.Base(filename)
-	jsonFileName := strings.TrimSuffix(basename, filepath.Ext(basename))
+	baseName := filepath.Base(fileNname)
+	jsonFileName := strings.TrimSuffix(baseName, filepath.Ext(baseName))
 
-	xlFile, err := xlsx.OpenFile(filename)
+	xlFile, err := xlsx.OpenFile(fileNname)
 	if err != nil {
 
-		fmt.Println(filename, "=> Open excel failed.")
+		fmt.Println(fileNname, "=> Open excel failed.")
 
 		return
 	}
@@ -48,7 +48,7 @@ func doExportFile(filename, dir string) {
 
 	if len(sheet.Rows) <= 2 {
 
-		fmt.Println(filename, "=> empty")
+		fmt.Println(fileNname, "=> empty")
 
 		return
 	}
@@ -192,7 +192,7 @@ func initRowData(row *xlsx.Row, specsData []map[string]interface{}) (data []map[
 		cellSpecs := specsData[idxCell]
 		switch cellSpecs["type"] {
 
-		case "string":
+		case "string", "date":
 
 			cellData["key"] = cellSpecs["key"]
 			cellData["value"] = fmt.Sprintf(`"%v"`, cell.String())
@@ -211,10 +211,11 @@ func initRowData(row *xlsx.Row, specsData []map[string]interface{}) (data []map[
 			cellData["value"] = cell.String()
 			cellData["v"] = true
 
-		case "date":
+		case "float":
 
 			cellData["key"] = cellSpecs["key"]
-			cellData["value"] = fmt.Sprintf(`"%v"`, cell.String())
+			cellFloat, _ := cell.Float()
+			cellData["value"] = cellFloat
 			cellData["v"] = true
 
 		case "{}":
@@ -330,7 +331,7 @@ func getItemValue(itype, cellString string) interface{} {
 
 		return fmt.Sprintf(`"%s"`, cellString)
 
-	case "int", "bool":
+	case "int", "bool", "float":
 
 		return cellString
 
