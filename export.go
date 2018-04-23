@@ -27,15 +27,15 @@ const jsonTemplate = `[{{range $item :=.}}
 	}{{if $item.end}},{{end}}{{end}}
 ]`
 
-func doExportFile(fileNname, dir string) {
+func doExportFile(fileName, dir string) {
 
-	baseName := filepath.Base(fileNname)
+	baseName := filepath.Base(fileName)
 	jsonFileName := strings.TrimSuffix(baseName, filepath.Ext(baseName))
 
-	xlFile, err := xlsx.OpenFile(fileNname)
+	xlFile, err := xlsx.OpenFile(fileName)
 	if err != nil {
 
-		fmt.Println(fileNname, "=> Open excel failed.")
+		fmt.Println(fileName, "=> Open excel failed.")
 
 		return
 	}
@@ -48,7 +48,7 @@ func doExportFile(fileNname, dir string) {
 
 	if len(sheet.Rows) <= 2 {
 
-		fmt.Println(fileNname, "=> empty")
+		fmt.Println(fileName, "=> empty")
 
 		return
 	}
@@ -97,6 +97,8 @@ func doExportFile(fileNname, dir string) {
 
 	t := template.Must(template.New("php").Parse(jsonTemplate))
 	t.Execute(f, datas)
+
+	fmt.Printf("success: %s.xlsx to %s.json\n", jsonFileName, jsonFileName)
 }
 
 func isDescRow(cellString string) bool {

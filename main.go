@@ -1,6 +1,10 @@
 package main
 
-import "flag"
+import (
+	"flag"
+	"fmt"
+	"time"
+)
 
 func main() {
 
@@ -11,9 +15,14 @@ func main() {
 
 	flag.Parse()
 
+	fmt.Println("欢迎使用xlsxtojson工具\n")
+
 	files, _ := listDir(fileDir, "xlsx")
 	for _, f := range files {
 
 		doExportFile(f, outDir)
 	}
+
+	fmt.Println("\n转换完成，3秒后自动关闭。")
+	time.Sleep(3 * time.Second)
 }
