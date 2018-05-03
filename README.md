@@ -12,5 +12,3 @@ xlsxtojson
 
 示例<br>
 >项目中example<br>
-
-游戏开发交流群：193761381
