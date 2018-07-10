@@ -102,6 +102,7 @@ func doExportFile(fileName, dir string) {
 }
 
 func isDescRow(cellString string) bool {
+	
 	return strings.Contains(cellString, "＃") || strings.Contains(cellString, "#")
 }
 
