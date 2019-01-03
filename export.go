@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/tealeg/xlsx"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 	"text/template"
+
+	"github.com/tealeg/xlsx"
 )
 
 const jsonTemplate = `[{{range $item :=.}}
@@ -19,7 +20,7 @@ const jsonTemplate = `[{{range $item :=.}}
 		{{$kv.key}} : [{{range $kva :=$kv.value}}
 			{{$kva.value}}{{if not $kva.end}},{{end}}{{end}}
 		]{{if not $kv.end}},{{end}}{{else if $kv.ao}}
-		{{$kv.key}} : [　{{range $end,$kvao :=$kv.value}}
+		{{$kv.key}} : [{{range $end,$kvao :=$kv.value}}
 			{　{{range $ao :=$kvao}}
 				{{$ao.key}} : {{$ao.value}}{{if not $ao.end}},{{end}}{{end}}
 			}{{if lt $end $kv.count}},{{end}}{{end}}
@@ -95,20 +96,20 @@ func doExportFile(fileName, dir string) {
 	}
 	defer f.Close()
 
-	t := template.Must(template.New("php").Parse(jsonTemplate))
+	t := template.Must(template.New("json").Parse(jsonTemplate))
 	t.Execute(f, datas)
 
 	fmt.Printf("success: %s.xlsx to %s.json\n", jsonFileName, jsonFileName)
 }
 
 func isDescRow(cellString string) bool {
-	
+
 	return strings.Contains(cellString, "＃") || strings.Contains(cellString, "#")
 }
 
 func initSpecsRow(row *xlsx.Row) []map[string]interface{} {
 
-	specsData := make([]map[string]interface{}, 1)
+	specsData := make([]map[string]interface{}, len(row.Cells))
 
 	for idxCell, cell := range row.Cells {
 
@@ -128,7 +129,7 @@ func initSpecsRow(row *xlsx.Row) []map[string]interface{} {
 		cellData["key"] = fmt.Sprintf(`"%v"`, cellInfo[0])
 		cellData["type"] = cellInfo[1]
 
-		specsData = append(specsData, cellData)
+		specsData[idxCell] = cellData
 	}
 
 	return specsData

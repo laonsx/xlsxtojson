@@ -23,6 +23,6 @@ func main() {
 		doExportFile(f, outDir)
 	}
 
-	fmt.Println("\n转换完成，3秒后自动关闭。")
-	time.Sleep(3 * time.Second)
+	fmt.Println("\n转换完成，5秒后自动关闭。")
+	time.Sleep(5 * time.Second)
 }

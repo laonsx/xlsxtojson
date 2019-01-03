@@ -26,6 +26,11 @@ func listDir(dirPth string, suffix string) (files []string, err error) {
 			continue
 		}
 
+		if strings.HasPrefix(f.Name(), "~$") {
+
+			continue
+		}
+
 		if strings.HasSuffix(strings.ToUpper(f.Name()), suffix) {
 
 			files = append(files, dirPth+pthSep+f.Name())
