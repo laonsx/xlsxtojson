@@ -11,21 +11,21 @@ import (
 	"github.com/tealeg/xlsx"
 )
 
-const jsonTemplate = `[{{range $item :=.}}
-	{　{{range $kv :=$item.value}}{{if $kv.v}}
-		{{$kv.key}} : {{$kv.value}}{{if not $kv.end}},{{end}}{{else if $kv.o}}
-		{{$kv.key}} : {　{{range $kvo :=$kv.value}}
-			{{$kvo.key}} : {{$kvo.value}}{{if not $kvo.end}},{{end}}{{end}}
-		}{{if not $kv.end}},{{end}}{{else if $kv.a}}
-		{{$kv.key}} : [{{range $kva :=$kv.value}}
-			{{$kva.value}}{{if not $kva.end}},{{end}}{{end}}
-		]{{if not $kv.end}},{{end}}{{else if $kv.ao}}
-		{{$kv.key}} : [{{range $end,$kvao :=$kv.value}}
-			{　{{range $ao :=$kvao}}
-				{{$ao.key}} : {{$ao.value}}{{if not $ao.end}},{{end}}{{end}}
-			}{{if lt $end $kv.count}},{{end}}{{end}}
-		]{{if not $kv.end}},{{end}}{{end}}{{end}}
-	}{{if $item.end}},{{end}}{{end}}
+const jsonTemplate = `[(range $item :=.)
+	{(range $kv :=$item.value)(if $kv.v)
+		($kv.key) : ($kv.value)(if not $kv.end),(end)(else if $kv.o)
+		($kv.key) : {(range $kvo :=$kv.value)
+			($kvo.key) : ($kvo.value)(if not $kvo.end),(end)(end)
+		}(if not $kv.end),(end)(else if $kv.a)
+		($kv.key) : [(range $kva :=$kv.value)
+			($kva.value)(if not $kva.end),(end)(end)
+		](if not $kv.end),(end)(else if $kv.ao)
+		($kv.key) : [(range $end,$kvao :=$kv.value)
+			{(range $ao :=$kvao)
+				($ao.key) : ($ao.value)(if not $ao.end),(end)(end)
+			}(if lt $end $kv.count),(end)(end)
+		](if not $kv.end),(end)(end)(end)
+	}(if $item.end),(end)(end)
 ]`
 
 func doExportFile(fileName, dir string) {
@@ -96,7 +96,7 @@ func doExportFile(fileName, dir string) {
 	}
 	defer f.Close()
 
-	t := template.Must(template.New("json").Parse(jsonTemplate))
+	t := template.Must(template.New("json").Delims("(", ")").Parse(jsonTemplate))
 	t.Execute(f, datas)
 
 	fmt.Printf("success: %s.xlsx to %s.json\n", jsonFileName, jsonFileName)
